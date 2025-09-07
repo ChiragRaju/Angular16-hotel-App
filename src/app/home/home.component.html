@@ -1,5 +1,7 @@
 <div class="text-center mt-5">
   <h1>Welcome to the Hotel Reservation System</h1>
   <button [routerLink]="['/new']">Create New Reservation</button>
-  <button [routerLink]="['/list']">View Reservations</button>
+  <button *ngIf="!isListRoute" [routerLink]="['/list']">
+    View Reservations
+  </button>
 </div>

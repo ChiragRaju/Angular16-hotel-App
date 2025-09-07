@@ -13,9 +13,22 @@ export class ReservationListComponent {
   constructor(private reservationService: ReservationService) {}
 
   ngOnInit(): void {
-    this.reservations = this.reservationService.getReservations();
+    //this is without backend
+    // this.reservations = this.reservationService.getReservations();
+
+    //this is with backend
+    this.reservationService.getReservations().subscribe((data) => {
+      this.reservations = data;
+    });
   }
   deleteReservation(id: string) {
-    this.reservationService.deleteReservation(id);
+    this.reservationService.deleteReservation(id).subscribe(() => {
+      console.log('Reservation deleted successfully');
+      this.reservations = this.reservations.filter(
+        (reservation) => reservation.id !== id
+      );
+    });
+    //this is without backend
+    // this.reservationService.deleteReservation(id);
   }
 }

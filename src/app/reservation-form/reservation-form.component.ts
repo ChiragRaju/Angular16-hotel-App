@@ -20,12 +20,21 @@ export class ReservationFormComponent implements OnInit {
     });
     const reservationId = this.route.snapshot.paramMap.get('id');
     if (reservationId) {
-      const reservation =
-        this.reservationService.getReservationById(reservationId);
+      // this is without backend
+      // const reservation =
+      //   this.reservationService.getReservationById(reservationId);
+
+      // this is with backend
+      this.reservationService
+        .getReservationById(reservationId)
+        .subscribe((reservation) => {
+          if (reservation) this.reservationForm.patchValue(reservation);
+        });
+
       //this is used to populate the form with existing reservation data for editing
-      if (reservation) {
-        this.reservationForm.patchValue(reservation);
-      }
+      // if (reservation) {
+      //   this.reservationForm.patchValue(reservation);
+      // }
     }
   }
 
@@ -42,11 +51,22 @@ export class ReservationFormComponent implements OnInit {
     let reservation: Reservation = this.reservationForm.value;
     const reservationId = this.route.snapshot.paramMap.get('id');
     if (reservationId) {
+      this.reservationService
+        .updateReservation(reservationId, reservation)
+        .subscribe(() => {
+          console.log('Reservation updated successfully');
+        });
       // Update
-      this.reservationService.updateReservation(reservationId, reservation);
+      // this is without backend
+      // this.reservationService.updateReservation(reservationId, reservation);
     } else {
-      //new
-      this.reservationService.addReservation(reservation);
+      // Add
+      // this is with backend
+      this.reservationService.addReservation(reservation).subscribe(() => {
+        console.log('Reservation added successfully');
+      });
+      // this is without backend
+      // this.reservationService.addReservation(reservation);
     }
 
     this.router.navigate(['/list']);
